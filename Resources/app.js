@@ -124,7 +124,8 @@
     var table_data = [];
     for (var ii = 0, ll = 250; ii < ll; ii++) {
         var row = Ti.UI.createTableViewRow({
-            height: '50dp'
+            height: '50dp',
+            className: 'compare'
         });
         var row_icon = Ti.UI.createImageView({
             image: 'icon.png',
