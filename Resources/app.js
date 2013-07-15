@@ -8,7 +8,11 @@
         title: 'ListView',
         layout: 'vertical'
     });
+
+    // Start prepare ListView
     var list_item_create_start = Date.now();
+
+    // ListView template
     var template = {
         properties: {
             height: '50dp'
@@ -21,11 +25,13 @@
                 top: '0dp',
                 left: '0dp',
                 width: '50dp',
-                height: '50dp'
+                height: '50dp',
+                bubbleParent: false
             },
             events: {
-                click: function () {
+                click: function (e) {
                     alert('You clicked icon.');
+                    Ti.API.debug(e);
                 }
             }
         }, {
@@ -40,11 +46,13 @@
                 top: '6dp',
                 left: '60dp',
                 width: Ti.UI.SIZE,
-                height: Ti.UI.SIZE
+                height: Ti.UI.SIZE,
+                bubbleParent: false
             },
             events: {
-                click: function () {
+                click: function (e) {
                     alert('You clicked name.');
+                    Ti.API.debug(e);
                 }
             }
         }, {
@@ -58,15 +66,19 @@
                 bottom: '6dp',
                 left: '60dp',
                 width: Ti.UI.SIZE,
-                height: Ti.UI.SIZE
+                height: Ti.UI.SIZE,
+                bubbleParent: false
             },
             events: {
-                click: function () {
+                click: function (e) {
                     alert('You clicked epoch.');
+                    Ti.API.debug(e);
                 }
             }
         }]
     };
+
+    // ListView item array
     var data = [];
     for (var i = 0, l = 250; i < l; i++) {
         data.push({
@@ -75,12 +87,20 @@
             },
             epoch: {
                 text: parseInt(Date.now(), 10) + ''
+            },
+            properties: {
+                itemId: 'row' + i,
+                accessoryType: Ti.UI.LIST_ACCESSORY_TYPE_NONE
             }
         });
     }
+
+    // ListView section
     var section = Ti.UI.createListSection({
         items: data
     });
+
+    // ListView
     var listview = Ti.UI.createListView({
         top: '0dp',
         left: '0dp',
@@ -90,10 +110,19 @@
         defaultItemTemplate: 'default',
         sections: [section]
     });
+
+    // Finish prepare ListView
     var list_item_create_finish = Date.now();
+
+    // ListView item click event handler
     listview.addEventListener('itemclick', function (e) {
-        console.log(JSON.stringify(e));
+        if (e.bindId === undefined) { // Row click
+            var item = e.section.getItemAt(e.itemIndex);
+            item.properties.accessoryType = item.properties.accessoryType === Ti.UI.LIST_ACCESSORY_TYPE_NONE ? Ti.UI.LIST_ACCESSORY_TYPE_CHECKMARK : Ti.UI.LIST_ACCESSORY_TYPE_NONE;
+            e.section.updateItemAt(e.itemIndex, item);
+        }
     });
+
     var list_prepare_view = Ti.UI.createView({
         top: '0dp',
         left: '0dp',
@@ -120,7 +149,11 @@
         title: 'TableView',
         layout: 'vertical'
     });
+
+    // Start prepare TableView
     var table_item_create_start = Date.now();
+
+    // TableViewRow array
     var table_data = [];
     for (var ii = 0, ll = 250; ii < ll; ii++) {
         var row = Ti.UI.createTableViewRow({
@@ -162,12 +195,17 @@
         row.add(row_epoch);
         table_data.push(row);
     }
+
+    // TableView
     var tableview = Ti.UI.createTableView({
         top: '0dp',
         left: '0dp',
         data: table_data
     });
+
+    // Finish prepare TableView
     var table_item_create_finish = Date.now();
+
     var table_prepare_view = Ti.UI.createView({
         top: '0dp',
         left: '0dp',
